@@ -35,7 +35,7 @@ for index, button in enumerate(buttons):
 print("All buttons work.")
 
 # create mixer object with the number of voices required
-mixer = audioio.Mixer(voice_count=4,
+mixer = audioio.Mixer(voice_count=5,
                       sample_rate=22050,
                       channel_count=1,
                       bits_per_sample=16,
@@ -49,13 +49,21 @@ for i in buttons:
     was_released.append(True)
 
 
+pad_length = 8.00
+start_time = time.monotonic()
+mixer.play(audioio.WaveFile(open("pad2mini.wav", "rb"), voice=5))
+
 # main body loop
 # check buttons and play sample in mixer
 while True:
+    if time.monotonic() > (start_time + pad_length):
+        start_time = time.monotonic()
+        mixer.play(audioio.WaveFile(open("pad2mini.wav", "rb"), voice=5)) 
+       
     for index, button in enumerate(buttons):
         if not button.value and was_released[index]:
             was_released[index] = False
-            mixer.play(samples[index], voice=index)
+            mixer.play(samples[index], voice=index+1)
             print("Playing sample " + str(index) + ".")
         elif button.value:
             was_released[index] = True
