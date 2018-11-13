@@ -51,19 +51,19 @@ for i in buttons:
 
 pad_length = 8.00
 start_time = time.monotonic()
-mixer.play(audioio.WaveFile(open("pad2mini.wav", "rb"), voice=5))
+mixer.play(audioio.WaveFile(open("pad2mini.wav", "rb")), voice=4)
 
 # main body loop
 # check buttons and play sample in mixer
 while True:
     if time.monotonic() > (start_time + pad_length):
         start_time = time.monotonic()
-        mixer.play(audioio.WaveFile(open("pad2mini.wav", "rb"), voice=5)) 
+        mixer.play(audioio.WaveFile(open("pad2mini.wav", "rb")), voice=4) 
        
     for index, button in enumerate(buttons):
         if not button.value and was_released[index]:
             was_released[index] = False
-            mixer.play(samples[index], voice=index+1)
+            mixer.play(samples[index], voice=index)
             print("Playing sample " + str(index) + ".")
         elif button.value:
             was_released[index] = True
